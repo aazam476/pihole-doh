@@ -30,36 +30,27 @@ services:
     image: azamserver/pihole-doh:latest
     restart: unless-stopped
     ports:
-      - "5053:5053/tcp"
-      - "5053:5053/udp"
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    ports:
       - "53:53/tcp"
       - "53:53/udp"
       - "67:67/udp"
       - "80:80/tcp"
-    links:
-      - pihole-doh
     environment:
       TZ: 'America/New_York'
-      DNS1: 'pihole-doh#5053'
+      DNS1: '127.0.0.1#5053'
     volumes:
       - './etc-pihole/:/etc/pihole/'
       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
     cap_add:
       - NET_ADMIN
-    restart: unless-stopped
 ```
 ____
 For those wondering, this is the Dockerfile file for the cloudflared docker:
 ```yml
-FROM ubuntu
+FROM pihole/pihole
 
 MAINTAINER ali azam <ali@azam.email>
 
-EXPOSE 5053/tcp 5053/udp
+EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
 
 RUN apt-get update \
     && apt-get -y upgrade \
@@ -76,7 +67,7 @@ RUN apt-get update \
     && echo "  - https://1.0.0.1/dns-query" >> /etc/cloudflared/config.yml \
     && cloudflared service install --legacy
 
-ENTRYPOINT ["cloudflared"]
+ENTRYPOINT ["/s6-init && cloudflared"]
 ```
 ___
 Contact:
