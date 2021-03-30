@@ -4,6 +4,8 @@ MAINTAINER ali azam <ali@azam.email>
 
 EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
 
+COPY ./startup /etc/startup
+
 RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get -y autoremove --purge \
@@ -17,6 +19,7 @@ RUN apt-get update \
     && echo "proxy-dns-upstream:" >> /etc/cloudflared/config.yml \
     && echo "  - https://1.1.1.1/dns-query" >> /etc/cloudflared/config.yml \
     && echo "  - https://1.0.0.1/dns-query" >> /etc/cloudflared/config.yml \
-    && cloudflared service install --legacy
+    && cloudflared service install --legacy \
+    && chmod +x /etc/startup
 
-ENTRYPOINT ["/s6-init && cloudflared"]
+ENTRYPOINT ["/etc/startup"]
