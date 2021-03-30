@@ -12,7 +12,6 @@ Do not mess up with the DNS settings in the new pihole installation, otherwise y
 ___
 This docker completes this tutorial (https://docs.pi-hole.net/guides/dns/cloudflared/) and uses it to install DoH on a new pihole installation (https://hub.docker.com/r/pihole/pihole). No matter the age of this docker, it should work, unless, pihole changes their repo, docker-compose.yml, or if cloudflared changes their config layout, or if they change their cloudflared download link. If for some reason it fails to work, please contact me using the contact info at the end of this README. 
 ___
-
 Default password: admin
 
 You can change the default password by using this command: (pihole is the default docker name in the docker-compose.yml file provided)
@@ -52,6 +51,8 @@ MAINTAINER ali azam <ali@azam.email>
 
 EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
 
+COPY ./startup /etc/startup
+
 RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get -y autoremove --purge \
@@ -65,11 +66,21 @@ RUN apt-get update \
     && echo "proxy-dns-upstream:" >> /etc/cloudflared/config.yml \
     && echo "  - https://1.1.1.1/dns-query" >> /etc/cloudflared/config.yml \
     && echo "  - https://1.0.0.1/dns-query" >> /etc/cloudflared/config.yml \
-    && cloudflared service install --legacy
+    && cloudflared service install --legacy \
+    && chmod +x /etc/startup
 
-ENTRYPOINT ["/s6-init && cloudflared"]
+ENTRYPOINT ["/etc/startup"]
 ```
 ___
+For those wondering, this is the script the docker runs on startup:
+```startup
+#!/bin/bash
+
+cloudflared
+/s6-init
+```
+___
+
 Contact:
 
 Name: Ali Azam
