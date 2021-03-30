@@ -76,8 +76,8 @@ For those wondering, this is the script the docker runs on startup:
 ```startup
 #!/bin/bash
 
-cloudflared
-/s6-init
+nohup cloudflared &
+nohup /s6-init &
 ```
 ___
 
