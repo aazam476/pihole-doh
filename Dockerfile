@@ -20,6 +20,8 @@ RUN apt-get update \
     && echo "  - https://1.1.1.1/dns-query" >> /etc/cloudflared/config.yml \
     && echo "  - https://1.0.0.1/dns-query" >> /etc/cloudflared/config.yml \
     && cloudflared service install --legacy \
+    && mkdir -p /etc/pihole-doh/logs/cloudflared \
+    && mkdir -p /etc/pihole-doh/logs/pihole \
     && chmod +x /etc/startup
 
 ENTRYPOINT ["/etc/startup"]
