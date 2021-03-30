@@ -1,4 +1,4 @@
 #!/bin/bash
 
-nohup cloudflared &
-nohup /s6-init &
+cd /etc/pihole-doh/logs/cloudflared && nohup cloudflared &
+cd /etc/pihole-doh/logs/pihole && nohup /s6-init &
