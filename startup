@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cloudflared
+/s6-init
