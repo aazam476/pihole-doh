@@ -1,8 +1,8 @@
-FROM ubuntu
+FROM pihole/pihole
 
 MAINTAINER ali azam <ali@azam.email>
 
-EXPOSE 5053/tcp 5053/udp
+EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
 
 RUN apt-get update \
     && apt-get -y upgrade \
@@ -19,4 +19,4 @@ RUN apt-get update \
     && echo "  - https://1.0.0.1/dns-query" >> /etc/cloudflared/config.yml \
     && cloudflared service install --legacy
 
-ENTRYPOINT ["cloudflared"]
+ENTRYPOINT ["/s6-init && cloudflared"]
