@@ -67,7 +67,6 @@ RUN apt-get update \
     && echo "  - https://1.1.1.1/dns-query" >> /etc/cloudflared/config.yml \
     && echo "  - https://1.0.0.1/dns-query" >> /etc/cloudflared/config.yml \
     && cloudflared service install --legacy \
-    && mkdir -p /etc/pihole-doh/logs/cloudflared \
     && mkdir -p /etc/pihole-doh/logs/pihole \
     && chmod +x /etc/startup
 
@@ -78,8 +77,8 @@ For those wondering, this is the script the docker runs on startup:
 ```startup
 #!/bin/bash
 
-cd /etc/pihole-doh/logs/cloudflared && nohup cloudflared &
 cd /etc/pihole-doh/logs/pihole && nohup /s6-init &
+cloudflared
 ```
 ___
 
