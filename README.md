@@ -1,7 +1,5 @@
 **Pi-Hole & Cloudflared DoH (DNS-over-HTTPS) Docker**
 =============
-**(Not Working Due To Technical Difficulties, Do Not Pull This Yet)**
-
 **DONT USE YOUR OWN PIHOLE DOCKER COMPOSE, OTHERWISE DoH WILL NOT BE CONFIGURED**
 
 After install, please restore your backup to the new pihole installation.
@@ -12,7 +10,7 @@ This docker completes this tutorial (https://docs.pi-hole.net/guides/dns/cloudfl
 ___
 Default password: admin
 
-You can change the default password by using this command: (pihole-doh is the default docker name in the docker-compose.yml file provided)
+You can change the default password in the docker-compose.yml file OR by using this command: (pihole-doh is the default docker name in the docker-compose.yml file provided)
 ```command
 sudo docker exec -it DOCKER_NAME pihole -a -p
 ```
@@ -34,6 +32,7 @@ services:
     environment:
       TZ: 'America/New_York'
       DNS1: '127.0.0.1#5053'
+      WEBPASSWORD: admin
     volumes:
       - './etc-pihole/:/etc/pihole/'
       - './etc-dnsmasq.d/:/etc/dnsmasq.d/'
