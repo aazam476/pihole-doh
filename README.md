@@ -42,8 +42,8 @@ services:
       - NET_ADMIN
 ```
 ____
-For those wondering, this is the Dockerfile file for this docker:
-```yml
+For those wondering, this is the Dockerfile file for the AMD64 docker:
+```Dockerfile
 FROM pihole/pihole
 
 MAINTAINER ali azam <ali@azam.email>
@@ -70,8 +70,65 @@ RUN mkdir -p /etc/pihole-doh/logs/pihole \
 ENTRYPOINT ["/etc/startup"]
 ```
 ___
+For those wondering, this is the Dockerfile file for the ARM64V8 docker:
+```Dockerfile
+FROM pihole/pihole:latest-arm64v8
+
+MAINTAINER ali azam <ali@azam.email>
+
+EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
+
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get -y autoremove --purge \
+    && apt-get -y install wget \
+    && wget https://github.com/cloudflare/cloudflared/releases/download/2021.3.6/cloudflared-linux-arm64 \
+    && mv ./cloudflared-linux-arm64 cloudflared \
+    && mv ./cloudflared /usr/bin \
+    && mkdir -p /etc/cloudflared/ 
+    
+COPY ./config.yml /etc/cloudflared/config.yml
+
+RUN cloudflared service install --legacy
+    
+COPY ./startup /etc/startup
+
+RUN mkdir -p /etc/pihole-doh/logs/pihole \
+    && chmod +x /etc/startup
+
+ENTRYPOINT ["/etc/startup"]
+```
+___
+For those wondering, this is the Dockerfile file for the ARM32V7 docker:
+```Dockerfile
+FROM pihole/pihole:latest-arm32v7
+
+MAINTAINER ali azam <ali@azam.email>
+
+EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
+
+RUN apt-get update \
+    && apt-get -y upgrade \
+    && apt-get -y autoremove --purge \
+    && apt-get -y install wget \
+    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-arm.deb \
+    && apt-get install ./cloudflared-stable-linux-arm.deb \
+    && mkdir -p /etc/cloudflared/ 
+    
+COPY ./config.yml /etc/cloudflared/config.yml
+
+RUN cloudflared service install --legacy
+    
+COPY ./startup /etc/startup
+
+RUN mkdir -p /etc/pihole-doh/logs/pihole \
+    && chmod +x /etc/startup
+
+ENTRYPOINT ["/etc/startup"]
+```
+___
 For those wondering, this is the config.yml file cloudflared uses:
-```config.yml
+```yml
 proxy-dns: true
 proxy-dns-port: 5053
 proxy-dns-upstream:
@@ -80,7 +137,7 @@ proxy-dns-upstream:
 ```
 ___
 For those wondering, this is the script the docker runs on startup:
-```startup
+```shell
 #!/bin/bash
 
 cd /etc/pihole-doh/logs/pihole && nohup /s6-init &
