@@ -1,5 +1,9 @@
 **Pi-Hole & Cloudflared DoH (DNS-over-HTTPS) Docker**
 =============
+Since Docker Hub made automated builds only avalible for Pro users, I cannot build anymore images of this docker, UNLESS I recieve enough donations. Docker Hub Pro is $60 a year, and I would really appriciate it if anyone contributed even a little so I can keep this project going. Thanks so much!
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?business=P7FNV8MU6ECR6&no_recurring=0&item_name=To+Keep+Projects%2C+Like+Pi-Hole+DOH%2C+Alive&currency_code=USD)
+___
 **DONT USE YOUR OWN PIHOLE DOCKER COMPOSE, OTHERWISE DoH WILL NOT BE CONFIGURED**
 
 After install, please restore your backup to the new pihole installation.
