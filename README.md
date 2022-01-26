@@ -12,7 +12,7 @@ Do not mess up with the DNS settings in the new pihole installation, otherwise y
 ___
 This docker completes this tutorial (https://docs.pi-hole.net/guides/dns/cloudflared/) and uses it to install DoH on a new pihole installation (https://hub.docker.com/r/pihole/pihole). No matter the age of this docker, it should work, unless, pihole changes their repo, docker-compose.yml, or if cloudflared changes their config layout, or if they change their cloudflared download link. If for some reason it fails to work, please contact me using the contact info at the end of this README. 
 
-More Info on What DoH is: https://developers.cloudflare.com/1.1.1.1/dns-over-https
+More Info on What DoH is: https://en.wikipedia.org/wiki/DNS_over_HTTPS
 ___
 Default password: admin
 
