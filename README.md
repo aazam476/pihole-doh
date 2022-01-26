@@ -58,7 +58,7 @@ RUN apt-get update \
     && apt-get -y upgrade \
     && apt-get -y autoremove --purge \
     && apt-get -y install wget \
-    && wget https://bin.equinox.io/c/VdrWdbjqyF/cloudflared-stable-linux-amd64.deb \
+    && wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
     && apt-get install ./cloudflared-stable-linux-amd64.deb \
     && mkdir -p /etc/cloudflared/ 
     
