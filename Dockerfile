@@ -9,7 +9,7 @@ RUN apt-get update \
     && apt-get -y autoremove --purge \
     && apt-get -y install wget \
     && wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
-    && apt-get install ./cloudflared-stable-linux-amd64.deb \
+    && apt-get install ./cloudflared-linux-amd64.deb \
     && mkdir -p /etc/cloudflared/ 
     
 COPY ./config.yml /etc/cloudflared/config.yml
