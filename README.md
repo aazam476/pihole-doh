@@ -1,6 +1,10 @@
 **Pi-Hole & Cloudflared DoH (DNS-over-HTTPS) Docker**
 =============
-Currently, I am paying $7/month for Docker Hub Pro in order for this docker image to be updated. It would really mean the world to me if you could manage to donate even a little to this docker image. Thanks so much!
+This docker image is now offically supported by the Docker-Sponsored Open Source program and should now be built whenever Pi-Hole updates.
+
+Even though the last commit on this repository may be old, unless stated so, this project is still being mantained. No commits just mean that there is nothing for me to update.
+___
+If you would like to support this project, you can donate here:
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?business=P7FNV8MU6ECR6&no_recurring=0&item_name=To+Keep+Projects%2C+Like+Pi-Hole+DOH%2C+Alive&currency_code=USD)
 ___
