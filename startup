@@ -1,4 +1,7 @@
 #!/bin/bash
 
-cd /etc/pihole-doh/logs/pihole && nohup /s6-init &
-cloudflared
+cd /etc/pihole-doh/logs/pihole \
+&& unshare --pid --fork --kill-child=SIGTERM --mount-proc \
+&& perl -e $SIG{INT}=''; $SIG{TERM}=''; exec @ARGV; -- \
+&& nohup /s6-init & \
+&& nohup cloudflared &
