@@ -59,23 +59,22 @@ MAINTAINER ali azam <ali@azam.email>
 EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
 
 RUN apt-get update \
-    && apt-get -y upgrade \
-    && apt-get -y autoremove --purge \
     && apt-get -y install wget \
     && wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
+    && apt-get -y purge wget \
     && apt-get install ./cloudflared-linux-amd64.deb \
-    && mkdir -p /etc/cloudflared/ 
-    
+    && mkdir -p /etc/cloudflared/ \
+    && mkdir -p /etc/s6-overlay/s6-rc.d/cloudflared/dependencies.d \
+    && touch /etc/s6-overlay/s6-rc.d/cloudflared/type \
+    && touch /etc/s6-overlay/s6-rc.d/cloudflared/run \
+    && touch /etc/s6-overlay/s6-rc.d/cloudflared/dependencies.d/base \
+    && touch /etc/s6-overlay/s6-rc.d/user/contents.d/cloudflared \
+    && echo 'longrun' >> /etc/s6-overlay/s6-rc.d/cloudflared/type \
+    && echo -e '#!/command/with-contenv bash\ncloudflared' >> /etc/s6-overlay/s6-rc.d/cloudflared/run
+
 COPY ./config.yml /etc/cloudflared/config.yml
 
-RUN cloudflared service install --legacy
-    
-COPY ./startup /etc/startup
-
-RUN mkdir -p /etc/pihole-doh/logs/pihole \
-    && chmod +x /etc/startup
-
-ENTRYPOINT ["/etc/startup"]
+ENTRYPOINT /s6-init
 ```
 ___
 For those wondering, this is the config.yml file cloudflared uses:
@@ -85,14 +84,6 @@ proxy-dns-port: 5053
 proxy-dns-upstream:
   - https://1.1.1.1/dns-query
   - https://1.0.0.1/dns-query
-```
-___
-For those wondering, this is the script the docker runs on startup:
-```startup
-#!/bin/bash
-
-cd /etc/pihole-doh/logs/pihole && nohup /s6-init &
-cloudflared
 ```
 ___
 
