@@ -6,9 +6,11 @@ EXPOSE 53:53/tcp 53:53/udp 67:67/udp 80:80/tcp
 
 RUN apt-get update \
     && apt-get -y install wget \
-    && wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb \
-    && apt-get -y purge wget \
-    && apt-get install ./cloudflared-linux-amd64.deb \
+    && rm -rf /var/lib/apt/lists/*
+    
+RUN wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+    
+RUN apt-get install ./cloudflared-linux-amd64.deb \
     && mkdir -p /etc/cloudflared/ \
     && mkdir -p /etc/s6-overlay/s6-rc.d/cloudflared/dependencies.d \
     && touch /etc/s6-overlay/s6-rc.d/cloudflared/type \
